@@ -1,35 +1,37 @@
 # SurPort
 
-Портфолио Артёма Суркова — UI/UX и motion-дизайнера. Редакционная одностраничная композиция с тремя обозначенными концептами интерфейсов.
+Личное сайт-портфолио на React + Vite. Тёмный фон — анимированный WebGL «шёлк», закреплённый на месте при скролле.
 
-## Стек
+## Структура
 
-- React 19 и Vite 6
-- Tailwind CSS 4 для базового слоя, авторские стили в `src/style.css`
-- GSAP и React Bits для появления работ и контактного блока
-- Шрифты Onest и Cormorant через Fontsource
-
-## Запуск
-
-```bash
-npm install
-npm run dev
+```
+public/
+  images/            статические изображения
+src/
+  assets/images/     изображения, импортируемые в компоненты
+  components/        переиспользуемые компоненты (Silk, SilkBackground)
+  sections/          секции страницы (hero, about, projects, contact)
+  data/              контент и данные портфолио
+  hooks/             общие React-хуки
+  styles/            вынесенные стили
+  App.jsx            корневой компонент
+  main.jsx           точка входа
+  index.css          базовые стили и слои фона
 ```
 
-Сборка и локальный просмотр:
+Описание компонентов и правил проекта — в [COMPONENTS.md](./COMPONENTS.md).
+
+## Скрипты
 
 ```bash
-npm run build
-npm run preview
+npm run dev      # dev-сервер
+npm run build    # production-сборка
+npm run preview  # предпросмотр сборки
+npm run lint     # oxlint
 ```
 
-Сайт публикуется по пути `/SurPort/`, поэтому `base` в `vite.config.js` задан явно.
+## Деплой
 
-## Материалы
+Push в `main` запускает GitHub Actions и публикует сборку на GitHub Pages:
 
-- `public/images/*.svg` — исходная графика концептов.
-- `public/images/*.png` — растровые копии для WebGL-галерей: Chromium не принимает SVG как текстовую текстуру.
-- `design.md` — направление, палитра и ограничения.
-- `agents.md` — правила работы и журнал этапов.
-
-Все работы в портфолио являются концептами. Клиенты, метрики и результаты не выдумываются.
+https://orskiyghost-png.github.io/SurPort/
