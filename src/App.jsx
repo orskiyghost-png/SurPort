@@ -16,7 +16,8 @@ export default function App() {
               <SpecularButton>Смотреть работы</SpecularButton>
               <SpecularButton
                 tint="#ffffff"
-                tintOpacity={0.04}
+                tintOpacity={0.1}
+                blur={10}
                 lineColor="#ffffff"
                 baseColor="#525252"
                 intensity={0.7}

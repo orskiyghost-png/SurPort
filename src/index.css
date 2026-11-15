@@ -25,6 +25,13 @@
   --color-border-strong: rgba(255, 255, 255, 0.24);
 }
 
+html {
+  background-color: var(--color-bg);
+  /* No rubber-band overscroll: the fixed layer must never be pulled away
+     from the bottom edge, it would leave a bare strip behind. */
+  overscroll-behavior-y: none;
+}
+
 html,
 body,
 #root {
@@ -35,8 +42,8 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
-  background: var(--color-bg);
   color: var(--color-text);
+  overscroll-behavior-y: none;
 }
 
 .silk-background {
@@ -45,15 +52,18 @@ body {
   left: 0;
   width: 100%;
   /* Largest viewport height: mobile toolbars hide on scroll, but this layer
-     keeps one size, so the canvas is never re-measured mid-scroll. */
+     keeps one size, so the canvas is never re-measured mid-scroll.
+     No contain/transform here: those make fixed layers misbehave in Safari. */
   height: 100vh;
   height: 100lvh;
-  z-index: -1;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  contain: strict;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
 }
 
 .hero {
