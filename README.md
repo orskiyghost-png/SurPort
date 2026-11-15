@@ -20,6 +20,7 @@ src/
 ```
 
 Описание компонентов и правил проекта — в [COMPONENTS.md](./COMPONENTS.md).
+Палитра и токены — в [design.md](./design.md).
 
 ## Скрипты
 
