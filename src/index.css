@@ -20,16 +20,26 @@ body {
 
 .silk-background {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Largest viewport height: mobile toolbars hide on scroll, but this layer
+     keeps one size, so the canvas is never re-measured mid-scroll. */
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hero {
   display: grid;
   place-items: center;
   min-height: 100vh;
+  min-height: 100svh;
 }
 
 .placeholder {

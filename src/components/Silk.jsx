@@ -488,11 +488,24 @@ const Silk = ({
       const width = Math.max(1, container.clientWidth)
       const height = Math.max(1, container.clientHeight)
       const ratio = Math.min(s.dpr || window.devicePixelRatio || 1, 2)
+      const pixelWidth = Math.max(1, Math.round(width * ratio))
+      const pixelHeight = Math.max(1, Math.round(height * ratio))
+      // Mobile toolbars fire the observer while scrolling. Skip the redraw when
+      // the backing store is already the right size, so the pattern never jumps.
+      if (
+        canvas.width === pixelWidth &&
+        canvas.height === pixelHeight &&
+        view.width === width &&
+        view.height === height &&
+        view.ratio === ratio
+      ) {
+        return
+      }
       view.width = width
       view.height = height
       view.ratio = ratio
-      canvas.width = Math.max(1, Math.round(width * ratio))
-      canvas.height = Math.max(1, Math.round(height * ratio))
+      canvas.width = pixelWidth
+      canvas.height = pixelHeight
       render()
       wake()
     }
