@@ -3,6 +3,14 @@
 Документ для агентов и людей: что есть в проекте, как это работает и как добавлять новое.
 Обновляй этот файл при добавлении каждого компонента.
 
+## О проекте
+
+SurPort — сайт-визуал ИИ-агента для сбора данных. Пользователь подключает свой ключ
+провайдера, выбирает модель (`Sur 1`, `Sur Docs`, `Sur Brief`) и описывает задачу.
+Агент сам строит промт-опросник под роль (юрист, студент, руководитель, сотрудник),
+ведёт по шагам и отдаёт результат в нужном формате. Сайт показывает этот сценарий
+по секциям, навигация по ним — через `BranchedMenu`.
+
 ## Стек и правила
 
 - React 19 + Vite 8, **JavaScript (JSX), без TypeScript**.
@@ -18,9 +26,9 @@
 public/images/          статика, отдаётся по абсолютному пути (/images/...)
 src/
   assets/images/        картинки, импортируемые в код
-  components/           переиспользуемые компоненты
-  sections/             секции страницы (hero, about, projects, contact)
-  data/                 контент портфолио (текст, ссылки, списки проектов)
+  components/           Silk, SilkBackground, SpecularButton, BranchedMenu
+  sections/             Hero, Explore, Models, HowItWorks, Roles, Results
+  data/                 контент сайта: models, steps, roles, outputs, access, navSections
   hooks/                общие хуки
   styles/               резерв под вынесенные стили, сейчас пусто
   App.jsx               сборка страницы из секций
@@ -183,12 +191,66 @@ import SpecularButton from './components/SpecularButton'
 <SpecularButton onClick={() => console.log('clicked')}>Смотреть работы</SpecularButton>
 ```
 
+## BranchedMenu
+
+`src/components/BranchedMenu.jsx` — меню-дерево с линиями-ветками (React Bits).
+Оригинал TypeScript + Tailwind + `@hugeicons/react`, здесь JSX + CSS из `src/index.css`.
+Зависимости: `@hugeicons/react`, `@hugeicons/core-free-icons`.
+
+### Где используется
+
+`src/sections/Explore.jsx`, секция «Карта проекта» (`id="overview"`). Пункт меню
+прокручивает страницу к секции с тем же `id`: `document.getElementById(value).scrollIntoView()`.
+Пункты описаны в `src/data/site.js` → `navSections`; текст раздела, иконка и `value`
+совпадают с `id` секции.
+
+### Как работает
+
+- Два уровня: секция (сворачивается) и дочерний пункт (выбирается).
+- Ветки — SVG-пути: вертикальная стойка, дуги к каждому пункту и «дотягивающаяся» линия
+  активного пункта (`stroke-dasharray` / `stroke-dashoffset`).
+- Активная секция подсвечивается маркером слева; позиция маркера считается из `offsetTop`
+  заголовка и пересчитывается `ResizeObserver`.
+- Сворачивание — `grid-template-rows: 0fr → 1fr`, без измерения высоты вручную.
+- `prefers-reduced-motion` убирает переходы.
+
+### Пропсы
+
+| Проп | По умолчанию | Что делает |
+| --- | --- | --- |
+| `items` | демо-набор | Секции `{ label, children: [{ value, label, icon }] }`. Лист без `children` — пункт верхнего уровня. |
+| `defaultOpen` | `0` | Номер секции или массив номеров, открытых сразу. `-1` — все закрыты. |
+| `defaultActive` | `''` | `value` активного пункта. Пусто — первый пункт открытой секции. |
+| `onSelect` | — | `(value, item)` при выборе пункта. |
+| `onToggle` | — | `(index, open)` при сворачивании секции. |
+| `color` | `#f5f5f5` | Цвет текста. |
+| `accentColor` | `#f5f5f5` | Активный пункт, маркер, активная линия. |
+| `lineColor` | `#3f3f46` | Стойка и ветки. |
+| `width` | `240` | Максимальная ширина меню, px (сжимается по контенту). |
+| `rowHeight` | `36` | Высота пункта, px. |
+| `indent` | `40` | Отступ текста пункта, px. |
+| `trunk` | `14` | Позиция стойки по X, px. |
+| `radius` | `10` | Радиус изгиба ветки, px. |
+| `lineWidth` | `1.5` | Толщина линий, px. |
+| `fontSize` | `14` | Кегль пункта, px (заголовок на 1px больше). |
+| `drawDuration` | `400` | Анимация активной линии, мс. |
+| `foldDuration` | `300` | Сворачивание секции, мс. |
+| `className` | `''` | Дополнительные классы. |
+
+### Палитра меню
+
+В проекте: `color="#ffffff"`, `accentColor="#d796a2"` (silk-050),
+`lineColor="rgba(255,255,255,0.24)"` (--color-border-strong), `width={280}`, `fontSize={15}`.
+
 ## Добавление новой секции
 
-1. Создай `src/sections/Hero.jsx` (имя = смысл секции).
-2. Стили — в `src/index.css` рядом с остальными, классы по BEM-подобной схеме (`.hero`, `.hero__title`).
-3. Подключи в `App.jsx` внутри `<main className="app">`.
-4. Допиши секцию в этот файл: назначение, пропсы, зависимости.
+1. Создай `src/sections/Name.jsx` (имя = смысл секции) и обёртку
+   `<section className="section" id="anchor">` + `<div className="container">`.
+2. Тексты складывай в `src/data/site.js`, а не в разметку: другие агенты ищут контент там.
+3. Стили — в `src/index.css`, классы по BEM-подобной схеме (`.hero`, `.hero__title`).
+4. Подключи в `App.jsx` внутри `<main className="app">`.
+5. Если секция должна быть в «Карте проекта», добавь пункт в `navSections` с тем же `value`/`id`.
+6. Допиши секцию в этот файл: назначение, пропсы, зависимости.
 
 ## Деплой
 
