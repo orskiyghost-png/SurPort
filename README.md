@@ -1,29 +1,35 @@
 # SurPort
 
-Личный сайт-портфолио на React + Vite.
+Портфолио Артёма Суркова — UI/UX и motion-дизайнера. Редакционная одностраничная композиция с тремя обозначенными концептами интерфейсов.
 
-## Структура
+## Стек
 
-```
-public/
-  images/            статические изображения
-src/
-  assets/images/     изображения, импортируемые в компоненты
-  components/        переиспользуемые компоненты
-  sections/          секции страницы (hero, about, projects, contact)
-  data/              контент и данные портфолио
-  hooks/             общие React-хуки
-  styles/            глобальные и модульные стили
-  App.jsx            корневой компонент
-  main.jsx           точка входа
-  index.css          базовые стили
-```
+- React 19 и Vite 6
+- Tailwind CSS 4 для базового слоя, авторские стили в `src/style.css`
+- GSAP и React Bits для появления работ и контактного блока
+- Шрифты Onest и Cormorant через Fontsource
 
-## Скрипты
+## Запуск
 
 ```bash
-npm run dev      # dev-сервер
-npm run build    # production-сборка
-npm run preview  # предпросмотр сборки
-npm run lint     # oxlint
+npm install
+npm run dev
 ```
+
+Сборка и локальный просмотр:
+
+```bash
+npm run build
+npm run preview
+```
+
+Сайт публикуется по пути `/SurPort/`, поэтому `base` в `vite.config.js` задан явно.
+
+## Материалы
+
+- `public/images/*.svg` — исходная графика концептов.
+- `public/images/*.png` — растровые копии для WebGL-галерей: Chromium не принимает SVG как текстовую текстуру.
+- `design.md` — направление, палитра и ограничения.
+- `agents.md` — правила работы и журнал этапов.
+
+Все работы в портфолио являются концептами. Клиенты, метрики и результаты не выдумываются.
