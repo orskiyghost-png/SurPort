@@ -4,6 +4,27 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* Основа */
+  --color-bg: #0d0d0d;
+  --color-silk: #af2e44;
+  --color-silk-sheen: #656565;
+
+  /* Текст */
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.5);
+  --color-text-soft: #b3b3b3;
+  --color-text-silk: rgba(255, 255, 255, 0.85); /* текст поверх шёлка: 5.02:1 */
+
+  /* Акцент */
+  --color-accent: #d796a2;
+  --color-accent-strong: #af2e44;
+
+  /* Границы */
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.24);
+}
+
 html,
 body,
 #root {
@@ -14,8 +35,8 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
-  background: #0d0d0d;
-  color: #ffffff;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .silk-background {
@@ -40,13 +61,115 @@ body {
   place-items: center;
   min-height: 100vh;
   min-height: 100svh;
+  padding: 24px;
+}
+
+.hero__content {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  max-width: 44rem;
+  text-align: center;
+}
+
+.hero__title {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.hero__lead {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: var(--color-text-silk);
+  max-width: 34rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+}
+/* SpecularButton */
+.specular-button {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border: 0;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--sb-text-color);
+  border-radius: var(--sb-radius);
+  background: color-mix(in srgb, var(--sb-tint) calc(var(--sb-tint-opacity) * 100%), transparent);
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(var(--sb-blur));
+  backdrop-filter: blur(var(--sb-blur));
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.specular-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.specular-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sb-text-color) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.specular-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.specular-button--sm {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+}
+
+.specular-button--md {
+  padding: 14px 28px;
+  font-size: 1rem;
+}
+
+.specular-button--lg {
+  padding: 18px 38px;
+  font-size: 1.125rem;
+}
+
+.specular-button__canvas {
+  position: absolute;
+  inset: -24px;
+  z-index: 1;
+  display: block;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  pointer-events: none;
+}
+
+.specular-button__label {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
 }
 
 .placeholder {
   display: grid;
   place-items: center;
   min-height: 120vh;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--color-text-muted);
 }
 
 h1,
